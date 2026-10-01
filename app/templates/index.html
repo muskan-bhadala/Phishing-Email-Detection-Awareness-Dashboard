@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">CYBERSECURITY AWARENESS</p>
+    <h1>Phishing Email Detection Dashboard</h1>
+    <p>Analyze sender details, email language, URLs and attachment indicators with an explainable risk score.</p>
+  </div>
+</section>
+
+<div class="grid two">
+<section class="card">
+<h2>Analyze an Email</h2>
+<form action="/analyze" method="post">
+<label for="sender">Sender email</label>
+<input id="sender" name="sender" type="email" placeholder="example@domain.com" required>
+<label for="subject">Subject</label>
+<input id="subject" name="subject" placeholder="Email subject" required>
+<label for="body">Email content</label>
+<textarea id="body" name="body" rows="12" placeholder="Paste authorized or synthetic email content here..." required></textarea>
+<button type="submit">Analyze Email</button>
+</form>
+</section>
+
+<section class="card">
+<h2>What is checked?</h2>
+<ul class="feature-list">
+<li><strong>Sender:</strong> format and domain signals</li>
+<li><strong>Content:</strong> urgency, credential and account language</li>
+<li><strong>URLs:</strong> HTTPS, IP hosts, punycode and URL length</li>
+<li><strong>Attachments:</strong> potentially risky executable/script/archive extensions</li>
+<li><strong>Machine learning:</strong> TF-IDF + Logistic Regression baseline</li>
+<li><strong>History:</strong> previous authorized analyses stored locally</li>
+</ul>
+<div class="notice">Tip: Use synthetic or authorized emails. Do not paste confidential information.</div>
+</section>
+</div>
+
+<section class="card">
+<h2>Recent Analysis History</h2>
+{% if history %}
+<table>
+<tr><th>ID</th><th>Time</th><th>Subject</th><th>Risk</th><th>Verdict</th></tr>
+{% for row in history %}
+<tr>
+<td>{{ row.id }}</td>
+<td>{{ row.created_at[:19].replace("T"," ") }}</td>
+<td>{{ row.subject|e }}</td>
+<td><span class="badge {{ row.risk_level|lower }}">{{ row.risk_score }}/100</span></td>
+<td>{{ row.verdict|e }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}<p>No analyses yet. Run your first authorized analysis above.</p>{% endif %}
+</section>
+{% endblock %}

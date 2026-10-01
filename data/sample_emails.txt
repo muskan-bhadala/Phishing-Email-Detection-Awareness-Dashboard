@@ -1,0 +1,9 @@
+SYNTHETIC SAMPLE 1
+Sender: security-alert123@gmail.com
+Subject: URGENT: Verify your account
+Body: Your account is suspended. Verify your password immediately at http://192.168.1.50/login
+
+SYNTHETIC SAMPLE 2
+Sender: team@example.org
+Subject: Project meeting
+Body: Hello, our project meeting is scheduled for Friday at 10 AM.

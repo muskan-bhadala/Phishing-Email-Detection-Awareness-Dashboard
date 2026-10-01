@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Analysis Result{% endblock %}
+{% block content %}
+<div class="card result-card">
+<p class="eyebrow">ANALYSIS RESULT</p>
+<h1>{{ result.verdict }}</h1>
+<div class="score">{{ result.risk_score }}<small>/100</small></div>
+<p class="risk {{ result.risk_level|lower }}">{{ result.risk_level }} RISK</p>
+<p><strong>Sender:</strong> {{ result.sender|e }}</p>
+<p><strong>Subject:</strong> {{ result.subject|e }}</p>
+
+<h2>Explainable Detection</h2>
+<ul>
+{% for item in result.indicators %}<li>{{ item|e }}</li>{% endfor %}
+</ul>
+
+<h2>Machine Learning Signal</h2>
+<p>Baseline model phishing probability: <strong>{{ result.ml_probability }}%</strong></p>
+
+{% if result.urls %}
+<h2>URL Analysis</h2>
+<table><tr><th>URL</th><th>Host</th><th>Flags</th></tr>
+{% for item in result.urls %}
+<tr><td>{{ item.url|e }}</td><td>{{ item.host|e }}</td><td>{{ item.flags|join(", ")|e or "No URL rule flags" }}</td></tr>
+{% endfor %}</table>
+{% endif %}
+
+{% if result.attachments %}
+<h2>Attachment Analysis</h2>
+<ul>{% for a in result.attachments %}<li>{{ a|e }}</li>{% endfor %}</ul>
+{% endif %}
+
+<a class="button secondary" href="/">Analyze another email</a>
+<a class="button secondary" href="/history">View full history</a>
+</div>
+{% endblock %}

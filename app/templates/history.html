@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Analysis History{% endblock %}
+{% block content %}
+<section class="card">
+<p class="eyebrow">AUDITABLE LOCAL HISTORY</p>
+<h1>Analysis History</h1>
+<p>Previous analyses from this local installation.</p>
+{% if history %}
+<table>
+<tr><th>ID</th><th>Timestamp</th><th>Sender</th><th>Subject</th><th>Score</th><th>Verdict</th></tr>
+{% for row in history %}
+<tr>
+<td>{{ row.id }}</td>
+<td>{{ row.created_at[:19].replace("T"," ") }}</td>
+<td>{{ row.sender|e }}</td>
+<td>{{ row.subject|e }}</td>
+<td><span class="badge {{ row.risk_level|lower }}">{{ row.risk_score }}/100</span></td>
+<td>{{ row.verdict|e }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}<p>No analysis history is available.</p>{% endif %}
+</section>
+{% endblock %}
